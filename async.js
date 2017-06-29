@@ -1,16 +1,27 @@
-const Bluebird = require('bluebird');
+Symbol.asyncIterator = Symbol.asyncIterator || Symbol("asyncIterator");
+
+const delay = ms => new Promise(resolve => {
+  setTimeout(resolve, ms);
+});
+
+async function* someGenerator() {
+  await delay(1000);
+  yield 1;
+  await delay(1000);
+  yield 2;
+  await delay(1000);
+  yield 3;
+}
 
 async function main() {
-  const x = await 42;
-  console.log(x);
+  const generator = someGenerator();
+  while (true) {
+    const {value, done} = await generator.next();
+    if (done) {
+      break;
+    }
+    console.log(value);
+  }
 }
 
-// main();
-
-async function working() {
-  console.log('Working...');
-  await Bluebird.delay(3000);
-  console.log('Done');
-}
-
-working();
+main();
