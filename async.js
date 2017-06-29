@@ -1,23 +1,16 @@
-const fetch = require('node-fetch');
+const Bluebird = require('bluebird');
 
-async function fetchFromGitHub(endpoint) {
-  const url = `https://api.github.com${endpoint}`;
-  const response = await fetch(url);
-  return await response.json();
+async function main() {
+  const x = await 42;
+  console.log(x);
 }
 
-async function showUserAndRepos(handle) {
-  const [user, repos] = await Promise.all([
-    fetchFromGitHub(`/users/${handle}`),
-    fetchFromGitHub(`/users/${handle}/repos`)
-  ]);
+// main();
 
-  // const user = results[0];
-  // const repos = results[1];
-
-  console.log(user.name);
-  console.log(`${repos.length} repos`);
+async function working() {
+  console.log('Working...');
+  await Bluebird.delay(3000);
+  console.log('Done');
 }
 
-
-showUserAndRepos("mariusschulz");
+working();
