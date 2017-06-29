@@ -7,14 +7,17 @@ async function fetchFromGitHub(endpoint) {
 }
 
 async function showUserAndRepos(handle) {
-  const userPromise = fetchFromGitHub(`/users/${handle}`);
-  const reposPromise = fetchFromGitHub(`/users/${handle}/repos`);
+  const [user, repos] = await Promise.all([
+    fetchFromGitHub(`/users/${handle}`),
+    fetchFromGitHub(`/users/${handle}/repos`)
+  ]);
 
-  const user = await userPromise;
-  const repos = await reposPromise;
+  // const user = results[0];
+  // const repos = results[1];
 
   console.log(user.name);
   console.log(`${repos.length} repos`);
 }
+
 
 showUserAndRepos("mariusschulz");
